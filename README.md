@@ -1,4 +1,4 @@
-# Apache on Debian 8 'jessie'
+# Apache on Debian 9 'stretch'
 
 This image provides a common apache based hosting environment. The intent is for the web content itself to be stored in persistent storage wihch is then mounted in to this image at `/var/www`
 
