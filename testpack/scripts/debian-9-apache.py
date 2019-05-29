@@ -6,8 +6,6 @@ from testpack_helper_library.unittests.dockertests import Test1and1Common
 
 
 class Test1and1ApacheImage(Test1and1Common):
-    container_ip = None
-
     @classmethod
     def setUpClass(cls):
         Test1and1Common.setUpClass()
@@ -91,7 +89,7 @@ class Test1and1ApacheImage(Test1and1Common):
 
     def test_apache2_get(self):
         driver = webdriver.PhantomJS()
-        driver.get("http://%s:8080/test.html" % Test1and1Common.container_ip)
+        driver.get("%s/test.html" % Test1and1Common.endpoint)
         self.assertEqual('Success', driver.title)
         #self.screenshot("open")
 
@@ -100,7 +98,7 @@ class Test1and1ApacheImage(Test1and1Common):
         webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.customHeaders.X-Forwarded-For'] = "1.2.3.4"
         webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.customHeaders.X-Forwarded-Port'] = "99"
         driver = webdriver.PhantomJS()
-        driver.get("http://%s:8080/cgi-bin/rpaf.sh" % Test1and1Common.container_ip)
+        driver.get("%s/cgi-bin/rpaf.sh" % Test1and1Common.endpoint)
         self.assertTrue(driver.page_source.find("1.2.3.4") > -1, msg="Missing X-Forwarded-For")
         self.assertTrue(driver.page_source.find("99") > -1, msg="Missing X-Forwarded-Port")
         self.assertEqual(
