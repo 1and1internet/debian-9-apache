@@ -18,22 +18,22 @@ class Test1and1ApacheImage(Test1and1Common):
 
     def test_apache2_running(self):
         self.assertTrue(
-            self.execRun("ps -ef").find('apache2') > -1,
+            self.exec("ps -ef").find('apache2') > -1,
             msg="apache2 not running"
         )
 
     def test_apache2_ports(self):
         self.assertFalse(
-            self.execRun("ls /etc/apache2/ports.conf").find("No such file or directory") > -1,
+            self.exec("ls /etc/apache2/ports.conf").find("No such file or directory") > -1,
             msg="/etc/apache2/ports.conf is missing"
         )
         self.assertTrue(
-            self.execRun("cat /etc/apache2/ports.conf").find("Listen 8080") > -1,
+            self.exec("cat /etc/apache2/ports.conf").find("Listen 8080") > -1,
             msg="ports.conf misconfigured"
         )
 
     def test_apache2_lock(self):
-        result = self.execRun("ls -ld /var/lock/apache2")
+        result = self.exec("ls -ld /var/lock/apache2")
         self.assertFalse(
             result.find("No such file or directory") > -1,
             msg="/var/lock/apache2 is missing"
@@ -42,7 +42,7 @@ class Test1and1ApacheImage(Test1and1Common):
         self.assertEqual(result[8], 'w', msg="/var/lock/apache2 is not a writable by others")
 
     def test_apache2_run(self):
-        result = self.execRun("ls -ld /var/run/apache2")
+        result = self.exec("ls -ld /var/run/apache2")
         self.assertFalse(
             result.find("No such file or directory") > -1,
             msg="/var/run/apache2 is missing"
@@ -51,7 +51,7 @@ class Test1and1ApacheImage(Test1and1Common):
         self.assertEqual(result[8], 'w', msg="/var/run/apache2 is not a writable by others")
 
     def test_apache2_mods_enabled(self):
-        result = self.execRun("ls -l /etc/apache2/mods-enabled/rewrite.load")
+        result = self.exec("ls -l /etc/apache2/mods-enabled/rewrite.load")
         self.assertFalse(
             result.find("No such file or directory") > -1,
             msg="/etc/apache2/mods-enabled/rewrite.load is missing"
@@ -59,7 +59,7 @@ class Test1and1ApacheImage(Test1and1Common):
         self.assertEqual(result[0], 'l', msg="rewrite module not enabled")
 
     def test_apache2_default_site(self):
-        result = self.execRun("cat /etc/apache2/sites-available/000-default.conf")
+        result = self.exec("cat /etc/apache2/sites-available/000-default.conf")
         self.assertFalse(
             result.find("No such file or directory") > -1,
             msg="/etc/apache2/sites-available/000-default.conf is missing"
@@ -80,7 +80,7 @@ class Test1and1ApacheImage(Test1and1Common):
             "Checking if /var/www/html is empty",
             "Log directory exists"
         ]
-        container_logs = self.container.logs().decode('utf-8')
+        container_logs = self.logs()
         for expected_log_line in expected_log_lines:
             self.assertTrue(
                 container_logs.find(expected_log_line) > -1,
