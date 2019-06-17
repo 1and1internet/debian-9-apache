@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import unittest
-from selenium import webdriver
 from testpack_helper_library.unittests.dockertests import Test1and1Common
 
 
